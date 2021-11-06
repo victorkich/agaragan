@@ -15,6 +15,7 @@ from gym import spaces
 from gym.utils import seeding
 from gym_turtlebot3.envs.mytf import euler_from_quaternion
 from gym_turtlebot3.envs import Respawn
+from cv_bridge import CvBridge, CvBridgeError
 import warnings
 warnings.simplefilter("ignore")
 
@@ -71,6 +72,7 @@ class TurtleBot3Env(gym.Env):
         self.start_time = time.time()
         self.last_step_time = self.start_time
 
+        self.bridge = CvBridge()
         self.seed()
 
     def seed(self, seed=None):
@@ -110,15 +112,15 @@ class TurtleBot3Env(gym.Env):
         self.heading = heading
 
     def getImage(self, image):
-        self.image = image.data
+        try:
+            self.image = self.bridge.imgmsg_to_cv2(image, "bgr8")
+        except CvBridgeError as e:
+            print(e)
 
     def get_time_info(self):
         time_info = time.strftime("%H:%M:%S", time.gmtime(time.time() - self.start_time))
         time_info += '-' + str(self.num_timesteps)
         return time_info
-
-    def get_env_state(self):
-        return cv2.imdecode(np.frombuffer(self.image, np.uint8), cv2.IMREAD_COLOR)
 
     def getState(self, scan):
         scan_range = []
@@ -145,7 +147,7 @@ class TurtleBot3Env(gym.Env):
                 if self.respawn_goal.last_index is (self.respawn_goal.len_goal_list - 1):
                     done = True
 
-        return self.get_env_state(), done  # , heading, current_distance
+        return self.image, done  # , heading, current_distance
 
     def setReward(self, done):
         if self.get_goalbox:
