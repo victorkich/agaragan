@@ -229,7 +229,7 @@ class RiGAN(object):
         fake_A = self.transforms2(self.G_BA(real_B))
 
         # Arange images along x-axis
-        image_grid = make_grid(torch.cat([real_A, real_B, fake_A, fake_B], 0), nrow=4, normalize=False)
+        image_grid = make_grid(torch.cat([real_A, fake_A, real_B, fake_B], 0), nrow=4, normalize=False)
 
         # Log metrics
         self.writer.add_image(tag="Image", img_tensor=image_grid, global_step=self.epoch)
