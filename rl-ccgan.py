@@ -79,9 +79,10 @@ if __name__ == '__main__':
     writer.add_hparams(hparam_dict=config, metric_dict={})
 
     assert args.algorithm == 'SAC' or args.algorithm == 'DDPG'  # Available algorithms: DDPG, SAC.
-    agent = CurlSAC(obs_shape, action_dim, config, args.algorithm, save_dir, writer)
+    agent = CurlSAC(obs_shape=obs_shape, action_shape=action_dim, config=config, save_dir=save_dir, writer=writer,
+                    algorithm=args.algorithm)
     if config['rigan']:
-        rigan = RiGAN(obs_shape, config, path, writer)
+        rigan = RiGAN(obs_shape, config, path, writer=writer)
 
     ep_r = 0
     if not config['train']:
@@ -151,7 +152,6 @@ if __name__ == '__main__':
             writer.add_scalars(main_tag="agent", tag_scalar_dict={"reward": total_reward,
                                                                   "episode_timing": time.time() - ep_start_time,
                                                                   "total_step": total_step}, global_step=i)
-            writer.add_scalar()
 
             if i % config['num_episode_save'] == 0:
                 agent.save()
