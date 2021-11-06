@@ -115,7 +115,7 @@ if __name__ == '__main__':
         for i in tqdm(range(config['num_eps_train'])):
             total_reward = 0
             step = 0
-            state = env.reset()
+            state = env.reset(new_random_goals=True)
             state = transform(state).unsqueeze(0)
             ep_start_time = time.time()
             for t in count():
@@ -137,10 +137,10 @@ if __name__ == '__main__':
                 step += 1
                 total_reward += reward
 
-                if t >= 256:
-                    loss_rl = agent.update(replay_buffer=replay_buffer, step=step)
-                    if config['rigan']:
-                        rigan.update(agent, loss_rl, state)
+                # if t >= 256:
+                loss_rl = agent.update(replay_buffer=replay_buffer, step=step)
+                if config['rigan']:
+                    rigan.update(agent, loss_rl, state)
 
                 if done or t >= config['max_ep_length']:
                     break

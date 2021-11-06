@@ -221,13 +221,13 @@ class RiGAN(object):
         fake_A = self.G_BA(real_B)
 
         # Arange images along x-axis
-        real_A = make_grid(real_A, nrow=1, normalize=True)
-        real_B = make_grid(real_B, nrow=1, normalize=True)
-        fake_A = make_grid(fake_A, nrow=1, normalize=True)
-        fake_B = make_grid(fake_B, nrow=1, normalize=True)
+        image_grid = make_grid([real_A, real_B, fake_A, fake_B], nrow=4, normalize=True)
+        # real_B = make_grid(real_B, nrow=1, normalize=True)
+        # fake_A = make_grid(fake_A, nrow=1, normalize=True)
+        # fake_B = make_grid(fake_B, nrow=1, normalize=True)
 
         # Arange images along y-axis
-        image_grid = torch.cat((real_A, fake_B, real_B, fake_A), 1)
+        # image_grid = torch.cat((real_A, fake_B, real_B, fake_A), 1)
         # save_image(image_grid, "outputs/%s.png" % self.epoch, normalize=False)
 
         # Log metrics

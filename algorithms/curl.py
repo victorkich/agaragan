@@ -18,7 +18,6 @@ class CurlSAC(object):
         self.actor_update_freq = config['actor_update_freq']
         self.critic_target_update_freq = config['critic_target_update_freq']
         self.cpc_update_freq = config['cpc_update_freq']
-        self.image_size = obs_shape[-1]
         self.curl_latent_dim = config['curl_latent_dim']
         self.detach_encoder = config['detach_encoder']
 
