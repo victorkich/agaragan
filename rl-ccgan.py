@@ -151,6 +151,7 @@ if __name__ == '__main__':
             writer.add_scalars(main_tag="agent", tag_scalar_dict={"reward": total_reward,
                                                                   "episode_timing": time.time() - ep_start_time,
                                                                   "total_step": total_step}, global_step=i)
+            writer.add_scalar()
 
             if i % config['num_episode_save'] == 0:
                 agent.save()

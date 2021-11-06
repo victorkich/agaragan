@@ -79,21 +79,21 @@ class CurlSAC(object):
 
     def select_action(self, obs):
         with torch.no_grad():
-            obs = Variable(obs.type(self.Tensor))
+            obs = obs.type(self.Tensor)
             # obs = torch.FloatTensor(obs).to(self.device)
             # obs = obs.unsqueeze(0)
             mu, _, _, _ = self.actor(obs, compute_log_pi=False)
             return mu.cpu().data.numpy().flatten()
 
     def forward(self, obs):
-        obs = Variable(obs.type(self.Tensor))
+        obs = obs.type(self.Tensor)
         # obs = torch.FloatTensor(obs).to(self.device)
         mu, _, _, _ = self.actor(obs, compute_log_pi=False)
         return mu
 
     def sample_action(self, obs):
         with torch.no_grad():
-            obs = Variable(obs.type(self.Tensor))
+            obs = obs.type(self.Tensor)
             # obs = torch.FloatTensor(obs).to(self.device)
             obs = obs.unsqueeze(0)
             mu, pi, _, _ = self.actor(obs, compute_log_pi=False)
@@ -116,9 +116,7 @@ class CurlSAC(object):
         self.critic_optimizer.step()
 
         # Log metrics
-        self.writer.add_scalars(main_tag="Loss", tag_scalar_dict={"Critic": critic_loss.item()},
-                                global_step=self.num_training)
-
+        self.writer.add_scalar(tag="Critic Loss", scalar_value=critic_loss.item(), global_step=self.num_training)
         return critic_loss.cpu().detach().numpy()
 
     def update_actor_and_alpha(self, obs):
@@ -140,7 +138,7 @@ class CurlSAC(object):
         self.log_alpha_optimizer.step()
 
         # Log metrics
-        self.writer.add_scalars(main_tag="Loss", tag_scalar_dict={"Actor": actor_loss.item(), "Entropy": entropy},
+        self.writer.add_scalars(main_tag="Actor Loss", tag_scalar_dict={"Actor": actor_loss.item(), "Entropy": entropy},
                                 global_step=self.num_training)
 
     def update_cpc(self, obs_anchor, obs_pos):
@@ -159,8 +157,7 @@ class CurlSAC(object):
         self.cpc_optimizer.step()
 
         # Log metrics
-        self.writer.add_scalars(main_tag="Loss", tag_scalar_dict={"Encoder": loss.item()},
-                                global_step=self.num_training)
+        self.writer.add_scalar(tag="Encoder Loss", scalar_value=loss.item(), global_step=self.num_training)
 
     def update(self, replay_buffer, step):
         obs, action, reward, next_obs, not_done, cpc_kwargs = replay_buffer.sample_cpc()

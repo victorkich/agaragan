@@ -94,7 +94,7 @@ class RiGAN(object):
         self.val_loader = DataLoader(val_data, batch_size=batch_size, shuffle=True, num_workers=1)
 
     def forward(self, obs):
-        image = Variable(obs.type(self.Tensor))
+        image = obs.type(self.Tensor)
         return self.G_AB(image)
 
     def update(self, agent, loss_rl, obs):
