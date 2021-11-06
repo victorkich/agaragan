@@ -249,7 +249,7 @@ class DatasetGAN(Dataset):
         super().__init__()
         self.files = os.listdir('{}/utils/data/images/'.format(dir))
         self.dir = dir
-        self.transform = transforms.Compose(transform)
+        self.transform = transform
 
     def __repr__(self):
         return f"Dataset class with {self.__len__()} files"
