@@ -15,6 +15,7 @@ class RiGAN(object):
     def __init__(self, input_shape, config, save_dir, writer):
         self.writer = writer
         self.save_dir = save_dir
+        self.input_shape = input_shape
         n_residual_blocks = config['n_residual_blocks']  # number of residual blocks in generator
         lr = config['rigan_learning_rate']  # learning rate
         b1 = config['b1']  # decay of first order momentum of gradient
@@ -217,9 +218,9 @@ class RiGAN(object):
         self.G_AB.eval()
         self.G_BA.eval()
         real_A = Variable(imgs.type(self.Tensor))
-        fake_B = self.transforms(self.G_AB(real_A))
-        real_B = Variable(obs.type(self.Tensor))
-        fake_A = self.transforms(self.G_BA(real_B))
+        fake_B = self.G_AB(real_A).resize(self.input_shape)
+        real_B = obs.type(self.Tensor)
+        fake_A = self.G_BA(real_B).resize(self.input_shape)
 
         # Arange images along x-axis
         image_grid = make_grid([real_A, real_B, fake_A, fake_B], nrow=4, normalize=True)
