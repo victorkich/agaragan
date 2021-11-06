@@ -149,9 +149,9 @@ if __name__ == '__main__':
             print("Total T:{} Episode: \t{} Total Reward: \t{:0.2f}".format(total_step, i, total_reward))
 
             # Log metrics
-            writer.add_scalars(main_tag="agent", tag_scalar_dict={"reward": total_reward,
-                                                                  "episode_timing": time.time() - ep_start_time,
-                                                                  "total_step": total_step}, global_step=i)
+            writer.add_scalars(main_tag="Agent", tag_scalar_dict={"Reward": total_reward,
+                                                                  "Episode Timing": time.time() - ep_start_time,
+                                                                  "Total Step": total_step}, global_step=i)
 
             if i % config['num_episode_save'] == 0:
                 agent.save()
