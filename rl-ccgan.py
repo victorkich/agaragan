@@ -73,6 +73,7 @@ if __name__ == '__main__':
     ou_noise = OUNoise(dim=action_dim, low=action_low, high=action_high)
     ou_noise.reset()
 
+    os.environ['COMET_API_KEY'] = config['api_key']
     comet_ml.init(project_name=config['project_name'])
     writer = SummaryWriter(comet_config={"disabled": True if config['disabled'] else False})
     writer.add_hparams(hparam_dict=config, metric_dict={})

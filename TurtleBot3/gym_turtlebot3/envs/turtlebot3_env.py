@@ -7,7 +7,7 @@ import math
 import time
 import cv2
 from geometry_msgs.msg import Twist, Point, Pose
-from sensor_msgs.msg import CompressedImage
+from sensor_msgs.msg import CompressedImage, Image
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Odometry
 from std_srvs.srv import Empty
@@ -35,7 +35,7 @@ class TurtleBot3Env(gym.Env):
 
         self.pub_cmd_vel = rospy.Publisher('cmd_vel', Twist, queue_size=5)
         self.sub_odom = rospy.Subscriber('odom', Odometry, self.getOdometry)
-        self.sub_image = rospy.Subscriber('camera/rgb/image_raw/compressed', CompressedImage, self.getImage, queue_size=1)
+        self.sub_image = rospy.Subscriber('camera/rgb/image_raw', Image, self.getImage, queue_size=1)
         self.reset_proxy = rospy.ServiceProxy('gazebo/reset_simulation', Empty)
         self.unpause_proxy = rospy.ServiceProxy('gazebo/unpause_physics', Empty)
         self.pause_proxy = rospy.ServiceProxy('gazebo/pause_physics', Empty)
