@@ -83,13 +83,13 @@ class RiGAN(object):
             transforms.RandomCrop((input_shape[1], input_shape[2])),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         ]
         self.transforms = transforms.Compose(transform)
         # Image transformations
         transform2 = [
-            transforms.Resize((input_shape[1], input_shape[2]))
-            # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            transforms.Resize((input_shape[1], input_shape[2])),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         ]
         self.transforms2 = transforms.Compose(transform2)
 
@@ -109,7 +109,7 @@ class RiGAN(object):
         batch = next(iter(self.train_loader))
         # Set model input
         real_A = Variable(batch.type(self.Tensor))
-        real_B = Variable(obs.type(self.Tensor))
+        real_B = Variable(self.transforms2(obs.type(self.Tensor)))
         # Adversarial ground truths
         valid = Variable(self.Tensor(np.ones((real_A.size(0), *self.D_A.output_shape))), requires_grad=False)
         fake = Variable(self.Tensor(np.zeros((real_A.size(0), *self.D_A.output_shape))), requires_grad=False)
@@ -122,9 +122,9 @@ class RiGAN(object):
         self.optimizer_G.zero_grad()
 
         # Identity loss
-        # loss_id_A = self.criterion_identity(self.G_BA(real_A), real_A)
-        # loss_id_B = self.criterion_identity(self.G_AB(real_B), real_B)
-        # loss_identity = (loss_id_A + loss_id_B) / 2
+        loss_id_A = self.criterion_identity(self.G_BA(real_A), real_A)
+        loss_id_B = self.criterion_identity(self.G_AB(real_B), real_B)
+        loss_identity = (loss_id_A + loss_id_B) / 2
 
         # GAN loss
         fake_B = self.G_AB(real_A)
@@ -150,7 +150,7 @@ class RiGAN(object):
         # Total loss
         # loss_G = loss_GAN + self.lambda_cyc * loss_cycle + self.lambda_id * loss_identity
         loss_G = self.lambda_gan * loss_GAN + self.lambda_cyc * loss_cycle + \
-                 self.lambda_scene * loss_scene + self.lambda_rl * loss_rl
+                 self.lambda_scene * loss_scene + self.lambda_rl * loss_rl + self.lambda_id * loss_identity
         loss_G.backward()
         self.optimizer_G.step()
 
@@ -190,7 +190,8 @@ class RiGAN(object):
                          loss_G.item(), loss_GAN.item(), loss_cycle.item(), loss_rl.item(), loss_scene.item()))
         self.writer.add_scalars(main_tag="Loss", tag_scalar_dict={"Discriminator": loss_D.item(),
                                                                   "Generator": loss_G.item(), "GAN": loss_GAN.item(),
-                                                                  "Cycle": loss_cycle.item(), "RL": loss_rl.item(),
+                                                                  "Identity": loss_identity.item(),
+                                                                  "RL": loss_rl.item(), "Cycle": loss_cycle.item(),
                                                                   "Scene": loss_scene.item()}, global_step=self.epoch)
 
         # If at sample interval save image
@@ -229,7 +230,7 @@ class RiGAN(object):
         fake_A = self.transforms2(self.G_BA(real_B))
 
         # Arange images along x-axis
-        image_grid = make_grid(torch.cat([real_A, fake_B, real_B, fake_A], 0), nrow=4, normalize=True)
+        image_grid = make_grid(torch.cat([real_A, fake_B, real_B, fake_A], 0), nrow=4, normalize=False)
 
         # Log metrics
         self.writer.add_image(tag="Image", img_tensor=image_grid, global_step=self.epoch)
