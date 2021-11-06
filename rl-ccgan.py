@@ -125,7 +125,9 @@ if __name__ == '__main__':
                     pos = random_crop(state, config['image_size'])
                     state = random_crop(state, config['image_size'])
                 action = agent.select_action(pos)
+                print('Action 1', action)
                 action = ou_noise.get_action(action, t)
+                print('Action 2', action)
 
                 next_state, reward, done, info = env.step(action)
                 next_state = transform(next_state).unsqueeze(0)
