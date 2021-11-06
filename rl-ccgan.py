@@ -52,8 +52,8 @@ state_dim = env.observation_space.shape[0]
 action_dim = env.action_space.shape[0]
 action_low = [-1.5, -0.1]
 action_high = [1.5, 0.12]
-obs_shape = (3, 84, 84)
-pre_aug_obs_shape = (3, 100, 100)
+obs_shape = (3, 256, 256)
+# pre_aug_obs_shape = (3, 100, 100)
 max_action = float(env.action_space.high[0])
 
 # Create a memory replay
@@ -125,9 +125,7 @@ if __name__ == '__main__':
                     pos = random_crop(state, config['image_size'])
                     state = random_crop(state, config['image_size'])
                 action = agent.select_action(pos)
-                print('Action 1', action)
                 action = ou_noise.get_action(action, t)
-                print('Action 2', action)
 
                 next_state, reward, done, info = env.step(action)
                 next_state = transform(next_state).unsqueeze(0)

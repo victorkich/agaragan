@@ -113,7 +113,7 @@ class TurtleBot3Env(gym.Env):
 
     def getImage(self, image):
         try:
-            self.image = self.bridge.imgmsg_to_cv2(image, "bgr8")
+            self.image = self.bridge.imgmsg_to_cv2(image, "rgb8")
         except CvBridgeError as e:
             print(e)
 
