@@ -224,9 +224,9 @@ class RiGAN(object):
         self.G_AB.eval()
         self.G_BA.eval()
         real_A = Variable(imgs.type(self.Tensor))
-        fake_B = self.transforms2(self.G_AB(real_A)[0])
+        fake_B = self.transforms2(self.G_AB(real_A))[0]
         real_B = obs.type(self.Tensor)
-        fake_A = self.transforms2(self.G_BA(real_B)[0])
+        fake_A = self.transforms2(self.G_BA(real_B))[0]
 
         # Arange images along x-axis
         image_grid = make_grid([real_A, real_B, fake_A, fake_B], nrow=4, normalize=True)
