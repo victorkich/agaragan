@@ -230,7 +230,7 @@ class RiGAN(object):
         print(real_A.shape, fake_A.shape, real_B.shape, fake_B.shape)
 
         # Arange images along x-axis
-        image_grid = make_grid([real_A, real_B, fake_A, fake_B], nrow=4, normalize=True)
+        image_grid = make_grid(torch.cat([real_A, real_B, fake_A, fake_B], 0), nrow=4, normalize=True)
         # real_B = make_grid(real_B, nrow=1, normalize=True)
         # fake_A = make_grid(fake_A, nrow=1, normalize=True)
         # fake_B = make_grid(fake_B, nrow=1, normalize=True)
