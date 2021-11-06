@@ -168,8 +168,8 @@ class TurtleBot3Env(gym.Env):
         return reward
 
     def step(self, action):
-        np.clip(action[0], self.min_ang_vel, self.max_ang_vel)
-        np.clip(action[1], self.min_linear_vel, self.max_linear_vel)
+        self.ang_vel = np.clip(action[0], self.min_ang_vel, self.max_ang_vel)
+        self.linear_vel = np.clip(action[1], self.min_linear_vel, self.max_linear_vel)
 
         vel_cmd = Twist()
         vel_cmd.linear.x = self.linear_vel
