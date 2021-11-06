@@ -52,7 +52,7 @@ state_dim = env.observation_space.shape[0]
 action_dim = env.action_space.shape[0]
 action_low = [-1.5, -0.1]
 action_high = [1.5, 0.12]
-obs_shape = (3, 256, 256)
+obs_shape = (3, 150, 150)
 # pre_aug_obs_shape = (3, 100, 100)
 max_action = float(env.action_space.high[0])
 
