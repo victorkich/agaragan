@@ -137,6 +137,7 @@ class CurlSAC(object):
         self.log_alpha_optimizer.step()
 
         # Log metrics
+        print("Actor", actor_loss.item(), "Entropy", entropy)
         self.writer.add_scalars(main_tag="Actor Loss", tag_scalar_dict={"Actor": actor_loss.item(), "Entropy": entropy},
                                 global_step=self.num_training)
 
