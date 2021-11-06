@@ -67,7 +67,7 @@ cpc_update_freq: 1
 detach_encoder: 0
 curl_latent_dim: 128
 hidden_dim: 256
-image_size: 84
+image_size: 128
 
 # Test parameters
 num_eps_test: 3
