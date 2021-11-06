@@ -82,14 +82,14 @@ class RiGAN(object):
             transforms.Resize((input_shape[1], input_shape[2])),
             transforms.RandomCrop((input_shape[1], input_shape[2])),
             transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            transforms.ToTensor()
+            # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ]
         self.transforms = transforms.Compose(transform)
         # Image transformations
         transform2 = [
-            transforms.Resize((input_shape[1], input_shape[2])),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            transforms.Resize((input_shape[1], input_shape[2]))
+            # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ]
         self.transforms2 = transforms.Compose(transform2)
 
@@ -227,17 +227,9 @@ class RiGAN(object):
         fake_B = self.transforms2(self.G_AB(real_A))
         real_B = obs.type(self.Tensor)
         fake_A = self.transforms2(self.G_BA(real_B))
-        print(real_A.shape, fake_A.shape, real_B.shape, fake_B.shape)
 
         # Arange images along x-axis
-        image_grid = make_grid(torch.cat([real_A, real_B, fake_A, fake_B], 0), nrow=4, normalize=True)
-        # real_B = make_grid(real_B, nrow=1, normalize=True)
-        # fake_A = make_grid(fake_A, nrow=1, normalize=True)
-        # fake_B = make_grid(fake_B, nrow=1, normalize=True)
-
-        # Arange images along y-axis
-        # image_grid = torch.cat((real_A, fake_B, real_B, fake_A), 1)
-        # save_image(image_grid, "outputs/%s.png" % self.epoch, normalize=False)
+        image_grid = make_grid(torch.cat([real_A, real_B, fake_A, fake_B], 0), nrow=4, normalize=False)
 
         # Log metrics
         self.writer.add_image(tag="Image", img_tensor=image_grid, global_step=self.epoch)

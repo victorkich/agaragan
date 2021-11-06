@@ -12,7 +12,6 @@ num_eps_train: 10000  # number of episodes
 max_ep_length: 1000  # maximum number of steps per episode
 discount_rate: 0.99  # Discount rate (gamma) for future rewards
 update_agent_ep: 2  # agent gets latest parameters from learner every update_agent_ep episodes
-batch_queue_size: 128  # queue with batches given to learner
 num_episode_save: 100
 device: cuda
 save_gif: 0
