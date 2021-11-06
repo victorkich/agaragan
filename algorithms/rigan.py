@@ -231,4 +231,4 @@ class RiGAN(object):
         # save_image(image_grid, "outputs/%s.png" % self.epoch, normalize=False)
 
         # Log metrics
-        self.writer.add_image(tag="Image", image_tensor=image_grid, global_step=self.epoch)
+        self.writer.add_image(tag="Image", img_tensor=image_grid, global_step=self.epoch)
