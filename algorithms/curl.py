@@ -108,7 +108,7 @@ class CurlSAC(object):
         # get current Q estimates
         current_Q1, current_Q2 = self.critic(obs, action, detach_encoder=self.detach_encoder)
         critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
-        c_loss = copy.deepcopy(critic_loss)
+        c_loss = copy.deepcopy(critic_loss.detach())
 
         # Optimize the critic
         self.critic_optimizer.zero_grad()
