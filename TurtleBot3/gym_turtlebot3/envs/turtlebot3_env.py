@@ -70,7 +70,6 @@ class TurtleBot3Env(gym.Env):
 
         self.start_time = time.time()
         self.last_step_time = self.start_time
-        self.old_distance = self._getGoalDistace()
 
         self.seed()
 
