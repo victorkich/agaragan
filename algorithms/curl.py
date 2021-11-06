@@ -124,7 +124,7 @@ class CurlSAC(object):
         actor_Q1, actor_Q2 = self.critic(obs, pi, detach_encoder=True)
         actor_Q = torch.min(actor_Q1, actor_Q2)
         actor_loss = (self.alpha.detach() * log_pi - actor_Q).mean()
-        entropy = 0.5 * log_std.shape[1] * (1.0 + np.log(2 * np.pi)) + log_std.sum(dim=-1)
+        # entropy = 0.5 * log_std.shape[1] * (1.0 + np.log(2 * np.pi)) + log_std.sum(dim=-1)
 
         # optimize the actor
         self.actor_optimizer.zero_grad()
@@ -137,9 +137,7 @@ class CurlSAC(object):
         self.log_alpha_optimizer.step()
 
         # Log metrics
-        print("Actor", actor_loss.item(), "Entropy", entropy)
-        self.writer.add_scalars(main_tag="Actor Loss", tag_scalar_dict={"Actor": actor_loss.item(), "Entropy": entropy},
-                                global_step=self.num_training)
+        self.writer.add_scalar(tag="Actor Loss", scalar_value=actor_loss.item(), global_step=self.num_training)
 
     def update_cpc(self, obs_anchor, obs_pos):
         z_a = self.CURL.encode(obs_anchor)
