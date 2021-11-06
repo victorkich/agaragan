@@ -1,0 +1,72 @@
+# Environment parameters
+seed: 1
+random_seed: 2022
+ros_environment: 1
+
+# Training parameters
+train: 1
+load: 0
+batch_size: 64
+num_eps_train: 10000  # number of episodes
+max_ep_length: 1000  # maximum number of steps per episode
+discount_rate: 0.99  # Discount rate (gamma) for future rewards
+update_agent_ep: 5  # agent gets latest parameters from learner every update_agent_ep episodes
+batch_queue_size: 64  # queue with batches given to learner
+num_episode_save: 100
+device: cpu
+save_gif: 0
+save_gif_eps: 10
+
+# Memory parameters
+replay_memory_prioritized: 0
+replay_mem_size: 100000  # maximum capacity of replay memory
+priority_alpha: 0.6  # controls the randomness vs prioritisation of the prioritised sampling (0.0 = Uniform sampling, 1.0 = Greedy prioritisation)
+priority_beta_start: 0.4  # starting value of beta - controls to what degree IS weights influence the gradient updates to correct for the bias introduces by priority sampling (0 - no correction, 1 - full correction)
+priority_beta_end: 1.0  # beta will be linearly annealed from its start value to this value throughout training
+priority_epsilon: 0.0001
+
+# Deep Reinforcement Learning network parameters
+critic_learning_rate: 0.001
+actor_learning_rate: 0.0001
+q_learning_rate: 0.0005
+dense_size: 512  # size of the 2 hidden layers in networks
+final_layer_init: 0.003
+tau: 0.005  # parameter for soft target network updates
+
+# RiGAN parameters
+rigan: 1  # active the rigan neural network
+n_residual_blocks: 9  # number of residual blocks in generator
+rigan_learning_rate: 0.0002
+b1: 0.5  # decay of first order momentum of gradient
+b2: 0.999  # decay of first order momentum of gradient
+n_workers: 4  # number of cpu threads to use during batch generation
+lambda_cyc: 10.0  # cycle loss weight
+lambda_id: 10.0  # identity loss weight
+lambda_rl: 10.0  # rl loss weight
+lambda_scene: 10.0  # rl scene loss weight
+lambda_gan: 1.0  # gan loss weight
+sample_interval: 5  # interval between saving generator outputs
+decay_epoch: 1000  # epoch from which to start lr decay
+
+# CURL parameters
+init_temperature: 0.01
+alpha_learning_rate: 0.001
+alpha_beta: 0.9
+actor_beta: 0.9
+critic_beta: 0.9
+actor_log_std_min: -10
+actor_log_std_max: 2
+actor_update_freq: 2
+critic_target_update_freq: 2
+encoder_feature_dim: 50
+encoder_learning_rate: 0.001
+num_layers: 4
+num_filters: 32
+cpc_update_freq: 1
+detach_encoder: 0
+curl_latent_dim: 128
+hidden_dim: 256
+image_size: 84
+
+# Test parameters
+num_eps_test: 3
