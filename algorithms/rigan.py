@@ -149,7 +149,7 @@ class RiGAN(object):
         # Total loss
         # loss_G = loss_GAN + self.lambda_cyc * loss_cycle + self.lambda_id * loss_identity
         loss_G = self.lambda_gan * loss_GAN + self.lambda_cyc * loss_cycle + self.lambda_scene * loss_scene + \
-                 self.lambda_rl * loss_rl + self.lambda_id * loss_identity
+                 self.lambda_id * loss_identity  # + self.lambda_rl * loss_rl
         loss_G.backward()
         self.optimizer_G.step()
 
