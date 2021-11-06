@@ -87,6 +87,11 @@ class RiGAN(object):
         ]
         self.transforms = transforms.Compose(transform)
 
+        transform2 = [
+            transforms.Resize((input_shape[1], input_shape[2]))
+        ]
+        self.transforms2 = transforms.Compose(transform2)
+
         # Loading the train and val dataset using data loader
         dataset = DatasetGAN(transform=self.transforms, dir=save_dir)
         lengths = [round(len(dataset) * 0.8), round(len(dataset) * 0.2)]
