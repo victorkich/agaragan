@@ -86,6 +86,12 @@ class RiGAN(object):
             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ]
         self.transforms = transforms.Compose(transform)
+        # Image transformations
+        transform2 = [
+            transforms.Resize((input_shape[1], input_shape[2])),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        ]
+        self.transforms2 = transforms.Compose(transform2)
 
         # Loading the train and val dataset using data loader
         dataset = DatasetGAN(transform=self.transforms, dir=save_dir)
@@ -218,9 +224,9 @@ class RiGAN(object):
         self.G_AB.eval()
         self.G_BA.eval()
         real_A = Variable(imgs.type(self.Tensor))
-        fake_B = self.G_AB(real_A)[0].resize(tuple(self.input_shape))
+        fake_B = self.transforms2(self.G_AB(real_A)[0])
         real_B = obs.type(self.Tensor)
-        fake_A = self.G_BA(real_B)[0].resize(tuple(self.input_shape))
+        fake_A = self.transforms2(self.G_BA(real_B)[0])
 
         # Arange images along x-axis
         image_grid = make_grid([real_A, real_B, fake_A, fake_B], nrow=4, normalize=True)
