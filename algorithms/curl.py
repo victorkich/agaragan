@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 import numpy as np
 import torch
+import copy
 
 
 class CurlSAC(object):
@@ -107,6 +108,7 @@ class CurlSAC(object):
         # get current Q estimates
         current_Q1, current_Q2 = self.critic(obs, action, detach_encoder=self.detach_encoder)
         critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
+        c_loss = copy.deepcopy(critic_loss)
 
         # Optimize the critic
         self.critic_optimizer.zero_grad()
@@ -115,7 +117,8 @@ class CurlSAC(object):
 
         # Log metrics
         self.writer.add_scalar(tag="Critic Loss", scalar_value=critic_loss.item(), global_step=self.num_training)
-        return critic_loss.cpu().detach().numpy()
+        # return critic_loss.cpu().detach().numpy()
+        return c_loss
 
     def update_actor_and_alpha(self, obs):
         # detach encoder, so we don't update it with the actor loss
