@@ -35,8 +35,7 @@ print('Waiting ROS environment starts...')
 time.sleep(5)
 
 rospy.init_node('rlccgan')
-env_name = 'TurtleBot3_Circuit_Simple-v0'
-env = gym.make(env_name, observation_mode=1, continuous=True)
+env = gym.make(config['env_name'])
 
 # Create directory for saved models and Logger
 save_dir = path + '/saved_models'

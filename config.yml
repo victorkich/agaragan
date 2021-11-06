@@ -2,6 +2,7 @@
 seed: 1
 random_seed: 2022
 ros_environment: 1
+env_name: TurtleBot3_Circuit_Simple-v0
 
 # Training parameters
 train: 1
@@ -70,3 +71,8 @@ image_size: 84
 
 # Test parameters
 num_eps_test: 3
+
+# Comet parameters
+api_key: 53WlWYRLtr1QwZTbjazoEv35u
+project_name: turtlebot3
+disabled: 0
