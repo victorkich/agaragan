@@ -38,7 +38,7 @@ rospy.init_node('rlccgan')
 env = gym.make(config['env_name'])
 
 # Create directory for saved models and Logger
-save_dir = path + '/saved_models'
+save_dir = path + '/saved_models/'
 logger = Logger(save_dir)
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
