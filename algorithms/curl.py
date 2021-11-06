@@ -1,5 +1,6 @@
 from models import ActorCURL, CriticCURL, CURL
 from utils.utils import soft_update_params
+from torch.autograd import Variable
 import torch.nn.functional as F
 import torch.nn as nn
 import numpy as np
@@ -60,6 +61,8 @@ class CurlSAC(object):
         self.cpc_optimizer = torch.optim.Adam(self.CURL.parameters(), lr=config['encoder_learning_rate'])
         self.cross_entropy_loss = nn.CrossEntropyLoss()
 
+        self.Tensor = torch.cuda.FloatTensor if config['device'] == 'cuda' else torch.Tensor
+
         self.train()
         self.critic_target.train()
         self.num_training = 0
@@ -76,19 +79,22 @@ class CurlSAC(object):
 
     def select_action(self, obs):
         with torch.no_grad():
-            obs = torch.FloatTensor(obs).to(self.device)
+            obs = Variable(obs.type(self.Tensor))
+            # obs = torch.FloatTensor(obs).to(self.device)
             # obs = obs.unsqueeze(0)
             mu, _, _, _ = self.actor(obs, compute_log_pi=False)
             return mu.cpu().data.numpy().flatten()
 
     def forward(self, obs):
-        obs = torch.FloatTensor(obs).to(self.device)
+        obs = Variable(obs.type(self.Tensor))
+        # obs = torch.FloatTensor(obs).to(self.device)
         mu, _, _, _ = self.actor(obs, compute_log_pi=False)
         return mu
 
     def sample_action(self, obs):
         with torch.no_grad():
-            obs = torch.FloatTensor(obs).to(self.device)
+            obs = Variable(obs.type(self.Tensor))
+            # obs = torch.FloatTensor(obs).to(self.device)
             obs = obs.unsqueeze(0)
             mu, pi, _, _ = self.actor(obs, compute_log_pi=False)
             return pi.cpu().data.numpy().flatten()
