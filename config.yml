@@ -40,11 +40,11 @@ rigan_learning_rate: 0.0002
 b1: 0.5  # decay of first order momentum of gradient
 b2: 0.999  # decay of first order momentum of gradient
 n_workers: 4  # number of cpu threads to use during batch generation
-lambda_cyc: 3.0  # 10 cycle loss weight
-lambda_id: 2.0  # 10 identity loss weight
+lambda_cyc: 1.0  # 10 cycle loss weight
+lambda_id: 1.0  # 10 identity loss weight
 lambda_rl: 1.0  # 10 rl loss weight
 lambda_scene: 1.0  # 10 rl scene loss weight
-lambda_gan: 10.0  # gan loss weight
+lambda_gan: 1.0  # gan loss weight
 sample_interval: 50  # interval between saving generator outputs
 decay_epoch: 1000  # epoch from which to start lr decay
 
