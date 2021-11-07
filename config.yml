@@ -45,7 +45,7 @@ lambda_id: 1.0  # 10 identity loss weight
 lambda_rl: 1.0  # 10 rl loss weight
 lambda_scene: 1.0  # 10 rl scene loss weight
 lambda_gan: 1.0  # gan loss weight
-sample_interval: 10  # interval between saving generator outputs
+sample_interval: 100  # interval between saving generator outputs
 decay_epoch: 100000  # epoch from which to start lr decay
 
 # CURL parameters
